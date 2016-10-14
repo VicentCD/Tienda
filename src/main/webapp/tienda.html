@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tienda</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="./tienda.css" type="text/css" media="all" />
+        <script>
+            precioTotalGeneral = 0;
+            function addcarrito(id)
+            {
+                //Declaración Variables
+                var producto = document.getElementById(id);
+                var imagen = producto.getElementsByTagName("img")[0].src;
+                var texto = producto.getElementsByTagName("p")[0].firstChild.nodeValue;
+                var precio_tratado = sacarprecio(texto);
+
+
+
+                if (document.getElementById("c-" + id) === null) {
+                    //Creacion nuevo div carrito
+                    unidad = 1;
+                    var carrito = document.getElementById("carrito");
+
+                    var creaImagen = document.createElement("img");
+                    creaImagen.setAttribute("src", imagen);
+                    var creaPrecio = document.createElement("p");
+                    creaPrecio.align = "center";
+                    creaPrecio.appendChild(document.createTextNode("Precio: " + precio_tratado + "€"));
+                    var creaUnidad = document.createElement("p");
+                    creaUnidad.align = "center";
+                    creaUnidad.appendChild(document.createTextNode("Unidades: " + unidad));
+                    var creaTotal = document.createElement("p");
+                    creaTotal.align = "center";
+                    creaTotal.appendChild(document.createTextNode("Total: " + precio_tratado * unidad + "€"));
+                    var borrarProducto = document.createElement("input");
+                    borrarProducto.type = "button";
+                    borrarProducto.value = "Borrar Unidad";
+                    borrarProducto.onclick = borrarUnProducto;
+                    var borrarTodo = document.createElement("input");
+                    borrarTodo.type = "button";
+                    borrarTodo.value = "Borrar Producto";
+                    borrarTodo.onclick = borrarTodoProducto;
+
+
+                    capacarrito = document.createElement("div");
+                    capacarrito.id = "c-" + id;
+                    capacarrito.appendChild(creaImagen);
+                    capacarrito.appendChild(creaPrecio);
+                    capacarrito.appendChild(creaUnidad);
+                    capacarrito.appendChild(creaTotal);
+                    capacarrito.appendChild(borrarProducto);
+                    capacarrito.appendChild(borrarTodo);
+                    carrito.appendChild(capacarrito);
+
+                    //Precio total General
+                    precioTotalGeneral += parseInt(precio_tratado);
+                    document.getElementById("informacion").getElementsByTagName("p")[0].firstChild.nodeValue = "Precio total: " + precioTotalGeneral + "€";
+
+                } else {
+                    //Añadimos una unidad
+                    productoRepetido = document.getElementById("c-" + id);
+                    var unidad = productoRepetido.getElementsByTagName("p")[1].firstChild.nodeValue;
+                    var unidadSuma = sacarunidad(unidad);
+                    unidadSuma++;
+                    productoRepetido.getElementsByTagName("p")[1].firstChild.nodeValue = "Unidades: " + unidadSuma;
+                    var precioTratado = precio_tratado * unidadSuma;
+                    productoRepetido.getElementsByTagName("p")[2].firstChild.nodeValue = "Total: " + precioTratado + "€";
+
+                    //Actualizamos precio total General 
+                    precioTotalGeneral += parseInt(precio_tratado);
+                    document.getElementById("informacion").getElementsByTagName("p")[0].firstChild.nodeValue = "Precio total: " + precioTotalGeneral + "€";
+                }
+            }
+
+            function sacarprecio(texto)
+            {
+                var troceado = texto.split(":")[1];
+                troceado = troceado.split("€")[0];
+                return troceado;
+            }
+
+            function sacarunidad(texto)
+            {
+                var troceado = texto.split(":")[1];
+                return troceado;
+            }
+
+            //Quitaremos una unidad
+            function borrarUnProducto()
+            {
+                var idProducto = document.getElementById(this.parentNode.id);
+                var unidad = idProducto.getElementsByTagName("p")[1].firstChild.nodeValue;
+                var unidadResta = sacarunidad(unidad);
+                unidadResta--;
+
+                if (UnidadResta !== 0) {
+                    idProducto.getElementsByTagName("p")[1].firstChild.nodeValue = "Unidades: " + unidadResta;
+                    var precioTratado = sacarprecio(idProducto.getElementsByTagName("p")[0].firstChild.nodeValue) * unidadResta;
+                    idProducto.getElementsByTagName("p")[2].firstChild.nodeValue = "Total: " + precioTratado + "€";
+                } else {
+                    
+                }
+
+                //Actualización precio General
+                precioTotalGeneral -= sacarprecio(idProducto.getElementsByTagName("p")[0].firstChild.nodeValue);
+                document.getElementById("informacion").getElementsByTagName("p")[0].firstChild.nodeValue = "Precio total: " + precioTotalGeneral + "€";
+            }
+
+            //Quitaremos todo el producto del carrito
+            function borrarTodoProducto()
+            {
+                alert("adios");
+            }
+
+        </script>
+    </head>
+    <body>
+        <div class="productos">
+            <div class="producto" id="articulo1" onclick="addcarrito(this.id)">
+                <img src="http://www.musik-produktiv.es/pic-010087584l/esp-e-ii-eclipse-db-vb.jpg" alt="ESP Eclipse II"/>
+                <p align="center">Precio: 1500€</p>
+            </div>
+            <div class="producto" id="articulo2" onclick="addcarrito(this.id)">
+                <img src="http://www.musik-produktiv.es/pic-010077629l/jackson-randy-rhodes-pro-rr-gb.jpg" alt="Jackson RR3"/>
+                <p align="center">Precio: 800€</p>
+            </div>
+            <div class="producto" id="articulo3" onclick="addcarrito(this.id)">
+                <img src="http://www.musik-produktiv.es/pic-010085715l/fender-custom-shop-postmodern-stratocaster-nos-bk.jpg" alt="Fender Stratocaster Custom"/>
+                <p align="center">Precio: 600€</p>
+            </div>
+            <div class="producto" id="articulo4" onclick="addcarrito(this.id)">
+                <img src="http://www.musik-produktiv.es/pic-010070616l/prs-s2-custom-24-birds.jpg" alt="PRS S2"/>
+                <p align="center">Precio: 2000€</p>
+            </div>
+        </div>
+        <div class="informacion" id="informacion">
+            <p>Precio total: </p>
+        </div>
+        <br>
+        <div class="carrito" id="carrito">
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+.productos {
+    clear: both;
+}
+
+.producto {
+    float: left;
+    border: black solid 1px;
+    border-collapse: collapse;
+}
+
+.informacion {
+    clear: both;
+    padding: 2px;
+}
+
+.productos img {
+    width: 300px;
+}
+
+
+.carrito img {
+    width: 300px;
+}
+
+
+
+.carrito div {
+    float: left;
+    border: red solid 1px;
+    border-collapse: collapse;
+}
+
+.carrito div input {
+    padding: 0.5em;
+    margin: 0.5em;
+    margin-left: 2.2em;
+}
