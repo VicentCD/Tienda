@@ -93,12 +93,12 @@
                 var unidadResta = sacarunidad(unidad);
                 unidadResta--;
 
-                if (UnidadResta !== 0) {
+                if (unidadResta !== 0) {
                     idProducto.getElementsByTagName("p")[1].firstChild.nodeValue = "Unidades: " + unidadResta;
                     var precioTratado = sacarprecio(idProducto.getElementsByTagName("p")[0].firstChild.nodeValue) * unidadResta;
                     idProducto.getElementsByTagName("p")[2].firstChild.nodeValue = "Total: " + precioTratado + "€";
                 } else {
-                    
+                    idProducto.parentNode.removeChild(idProducto);
                 }
 
                 //Actualización precio General
@@ -109,7 +109,23 @@
             //Quitaremos todo el producto del carrito
             function borrarTodoProducto()
             {
-                alert("adios");
+                var idProducto = document.getElementById(this.parentNode.id);
+                idProducto.parentNode.removeChild(idProducto);
+                //Actualización precio General
+                precioTotalGeneral -= sacarprecio(idProducto.getElementsByTagName("p")[2].firstChild.nodeValue);
+                document.getElementById("informacion").getElementsByTagName("p")[0].firstChild.nodeValue = "Precio total: " + precioTotalGeneral + "€";
+            }
+
+            //Borrar todo el carrito
+            function borrarCarrito()
+            {
+                var carrito = document.getElementById("carrito");
+                while (carrito.hasChildNodes()) {
+                    carrito.removeChild(carrito.firstChild);
+                }
+                //Actualización precio General
+                precioTotalGeneral = 0;
+                document.getElementById("informacion").getElementsByTagName("p")[0].firstChild.nodeValue = "Precio total: " + precioTotalGeneral + "€";
             }
 
         </script>
@@ -134,7 +150,8 @@
             </div>
         </div>
         <div class="informacion" id="informacion">
-            <p>Precio total: </p>
+            <p>Precio total: 0€</p>
+            <input type="button" onclick=borrarCarrito() value="Borrar Carrito"/>
         </div>
         <br>
         <div class="carrito" id="carrito">
